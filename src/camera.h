@@ -1,7 +1,6 @@
 #pragma once
 #include "linmath.h"
 
-
 void camera_init();
 void camera_get_position(vec3 position);
 void camera_set_position(vec3 position);

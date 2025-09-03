@@ -1,6 +1,6 @@
+#ifdef USE_ORBIT_CAMERA
 #pragma once
 #include "linmath.h"
-
 
 void camera_init();
 void camera_set_view(vec3 position, vec3 target, vec3 up);
@@ -15,3 +15,4 @@ void camera_get_projection(mat4x4 proj);
 float camera_get_zoom();
 void camera_set_zoom(float zoom);
 void camera_rotate(float dx, float dy);
+#endif

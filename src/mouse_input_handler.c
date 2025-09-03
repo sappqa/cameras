@@ -1,5 +1,5 @@
 #include "mouse_input_handler.h"
-#include "arcball_camera.h"
+#include "camera_include.h"
 #include <stdio.h>
 
 static int _left_down = 0;
@@ -7,9 +7,12 @@ static int _right_down = 0;
 static int _middle_down = 0;
 static double _last_xpos;
 static double _last_ypos;
+static double _mouse_down_x;
+static double _mouse_down_y;
 
-static void _left_press() {
+static void _left_press(GLFWwindow* window) {
     _left_down = 1;
+    glfwGetCursorPos(window, &_mouse_down_x, &_mouse_down_y);
 }
 
 static void _left_release() {
@@ -48,17 +51,29 @@ void handle_mouse_button_input(GLFWwindow* window, int button, int action, int m
     }
 }
 
+#ifdef USE_ARCBALL_CAMERA
+void handle_mouse_move_input_arcball(GLFWwindow* window, double xpos, double ypos) {
+    if (_left_down) {
+        camera_rotate(_mouse_down_x, _mouse_down_y, xpos, ypos);
+    }
+}
+
+void handle_mouse_move_input(GLFWwindow* window, double xpos, double ypos) { }
+#elif USE_ORBIT_CAMERA
+void handle_mouse_move_input_arcball(GLFWwindow* window, double xpos, double ypos) { }
+
 void handle_mouse_move_input(GLFWwindow* window, double xpos, double ypos) {
     double dx = xpos - _last_xpos;
     double dy = ypos - _last_ypos;
 
     if (_left_down) {
-        camera_rotate(dx, dy); // may need to do start and end for arcball
+        camera_rotate(dx, dy);
     }
     
     _last_xpos = xpos;
     _last_ypos = ypos;
 }
+#endif
 
 void handle_mouse_scroll_input(GLFWwindow* window, double xoffset, double yoffset) {
     camera_set_zoom(camera_get_zoom() + yoffset * .025);

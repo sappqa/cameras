@@ -1,3 +1,4 @@
+#ifdef USE_ORBIT_CAMERA
 #include "orbit_camera_axis_angle.h"
 #include "common.h"
 #include <stdio.h>
@@ -116,3 +117,4 @@ void camera_rotate(float dx, float dy) {
     camera_set_view(new_position, _target, _up);
     camera_up(_up);
 }
+#endif

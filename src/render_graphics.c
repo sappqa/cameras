@@ -1,7 +1,7 @@
 #include "render_graphics.h"
 #include "common.h"
 #include "shaders.h"
-#include "orbit_camera_axis_angle.h"
+#include "camera_include.h"
 #include "glad/glad.h"
 
 static GLuint _simple_shaders;
