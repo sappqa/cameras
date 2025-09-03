@@ -1,7 +1,7 @@
 #include "render_graphics.h"
 #include "common.h"
 #include "shaders.h"
-#include "camera_arcball.h"
+#include "orbit_camera_axis_angle.h"
 #include "glad/glad.h"
 
 static GLuint _simple_shaders;
@@ -37,15 +37,15 @@ static void _vertices_init() {
     };
 
     float cube_colors[] = {
-        0.1f, 0.1f, 0.1f, 1.0f,
-        0.1f, 0.1f, 0.1f, 1.0f,
-        0.1f, 0.1f, 0.1f, 1.0f,
-        0.1f, 0.1f, 0.1f, 1.0f,
+        0.6f, 0.1f, 0.1f, 1.0f,
+        0.6f, 0.1f, 0.1f, 1.0f,
+        0.1f, 0.1f, 0.6f, 1.0f,
+        0.1f, 0.1f, 0.6f, 1.0f,
 
-        0.1f, 0.1f, 0.1f, 1.0f,
-        0.1f, 0.1f, 0.1f, 1.0f,
-        0.1f, 0.1f, 0.1f, 1.0f,
-        0.1f, 0.1f, 0.1f, 1.0f
+        0.1f, 0.6f, 0.1f, 1.0f,
+        0.1f, 0.6f, 0.1f, 1.0f,
+        0.6f, 0.1f, 0.6f, 1.0f,
+        0.6f, 0.1f, 0.6f, 1.0f
     };
 
     GLuint indices[] = {

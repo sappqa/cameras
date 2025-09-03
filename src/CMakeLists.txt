@@ -7,7 +7,7 @@ set(SOURCES ${SOURCES}
     ${CMAKE_CURRENT_SOURCE_DIR}/render_graphics.c
     ${CMAKE_CURRENT_SOURCE_DIR}/shaders.c
     ${CMAKE_CURRENT_SOURCE_DIR}/mouse_input_handler.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/camera_arcball.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/orbit_camera_axis_angle.c
     PARENT_SCOPE)
 
 

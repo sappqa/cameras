@@ -1,4 +1,4 @@
-#include "camera_arcball.h"
+#include "camera.h"
 #include "common.h"
 #include <stdio.h>
 

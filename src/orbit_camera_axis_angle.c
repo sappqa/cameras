@@ -1,4 +1,4 @@
-#include "camera_arcball.h"
+#include "orbit_camera_axis_angle.h"
 #include "common.h"
 #include <stdio.h>
 
@@ -8,7 +8,7 @@ static vec3 _up = {0};
 static mat4x4 _view;
 static mat4x4 _projection;
 static float _zoom = 0.0f;
-static float _distance = 40.0f;
+static float _distance = 20.0f;
 
 static const vec3 X_AXIS = {1, 0, 0};
 static const vec3 Y_AXIS = {0, 1, 0};
@@ -85,7 +85,7 @@ void camera_set_zoom(float zoom) {
 }
 
 /*
- 
+Works ok, but doesn't roll very well when mouse is dragged horizontally near the top/bottom of the window.
 */
 void camera_rotate(float dx, float dy) {
     float dx_rad = (2 * M_PI / (float)RENDER_WINDOW_WIDTH) * dx;
@@ -98,8 +98,10 @@ void camera_rotate(float dx, float dy) {
     vec4 dir_inv;
     vec3_sub(dir_inv, _position, _target);
     vec4 yaw_offset; mat4x4_mul_vec4(yaw_offset, yaw, dir_inv);
-    // vec3 pos_yaw;
-    // vec3_add(pos_yaw, _target, yaw_offset);
+
+    vec3 new_position_yaw;
+    vec3_add(new_position_yaw, _target, yaw_offset);
+    camera_set_view(new_position_yaw, _target, _up);
 
     mat4x4 pitch;
     vec3 right; camera_right(right);
@@ -112,7 +114,5 @@ void camera_rotate(float dx, float dy) {
     vec3_add(new_position, _target, offset_pitch_yaw);
 
     camera_set_view(new_position, _target, _up);
-
     camera_up(_up);
 }
-

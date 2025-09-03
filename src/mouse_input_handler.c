@@ -1,5 +1,5 @@
 #include "mouse_input_handler.h"
-#include "camera_arcball.h"
+#include "arcball_camera.h"
 #include <stdio.h>
 
 static int _left_down = 0;
@@ -53,7 +53,7 @@ void handle_mouse_move_input(GLFWwindow* window, double xpos, double ypos) {
     double dy = ypos - _last_ypos;
 
     if (_left_down) {
-        camera_rotate(dx, dy);
+        camera_rotate(dx, dy); // may need to do start and end for arcball
     }
     
     _last_xpos = xpos;
