@@ -1,10 +1,10 @@
-#ifdef USE_ARCBALL_CAMERA
 #pragma once
 #include "linmath.h"
 
-void camera_init();
-void camera_get_projection(mat4x4 proj);
-float camera_get_zoom();
-void camera_set_zoom(float zoom);
-void camera_rotate(float start_x, float start_y, float end_x, float end_y);
-#endif
+void arcball_camera_init();
+void arcball_camera_set_view(vec3 position, vec3 target, vec3 up);
+void arcball_camera_set_start_point(float mouse_x, float mouse_y);
+void arcball_camera_get_projection(mat4x4 proj);
+float arcball_camera_get_distance();
+void arcball_camera_set_distance(float zoom);
+void arcball_camera_rotate(float mouse_x, float mouse_y);

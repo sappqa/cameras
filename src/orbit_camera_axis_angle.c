@@ -1,4 +1,3 @@
-#ifdef USE_ORBIT_CAMERA
 #include "orbit_camera_axis_angle.h"
 #include "common.h"
 #include <stdio.h>
@@ -7,36 +6,34 @@ static vec3 _position = {0};
 static vec3 _target = {0};
 static vec3 _up = {0};
 static mat4x4 _view;
-static mat4x4 _projection;
-static float _zoom = 0.0f;
 static float _distance = 20.0f;
 
 static const vec3 X_AXIS = {1, 0, 0};
 static const vec3 Y_AXIS = {0, 1, 0};
 
 
-void camera_init() {
+void orbit_camera_init() {
     vec3 position = {0, 0, -_distance};
     vec3 target = {0, 0, 0};
     vec3 up = {0, 1, 0};
     
-    camera_set_view(position, target, up);
+    orbit_camera_set_view(position, target, up);
 }
 
-void _update_view() {
+static void _update_view() {
     mat4x4 new_view;
     mat4x4_look_at(new_view, _position, _target, _up);
     mat4x4_dup(_view, new_view);
 }
 
-void camera_set_view(vec3 position, vec3 target, vec3 up) {
+void orbit_camera_set_view(vec3 position, vec3 target, vec3 up) {
     vec3_dup(_position, position);
     vec3_dup(_target, target);
     vec3_dup(_up, up);
     _update_view();
 }
 
-void camera_up(vec3 out) {
+void orbit_camera_up(vec3 out) {
     mat4x4 _; mat4x4_identity(_); 
     if (mat4x4_equals(_, _view)) {
         vec3_dup(out, (vec3) {0.0f, 1.0f, 0.0f});
@@ -47,7 +44,7 @@ void camera_up(vec3 out) {
     }
 }
 
-void camera_forward(vec3 out) {
+void orbit_camera_forward(vec3 out) {
     mat4x4 _; mat4x4_identity(_); 
     if (mat4x4_equals(_, _view)) {
         vec3_dup(out, (vec3) {0.0f, 0.0f, 0.0f});
@@ -58,7 +55,7 @@ void camera_forward(vec3 out) {
     }
 }
 
-void camera_right(vec3 out) {
+void orbit_camera_right(vec3 out) {
     mat4x4 _; mat4x4_identity(_); 
     if (mat4x4_equals(_, _view)) {
         vec3_dup(out, (vec3) {1.0f, 0.0f, 0.0f});
@@ -69,18 +66,18 @@ void camera_right(vec3 out) {
     }
 }
 
-void camera_get_projection(mat4x4 proj) {
+void orbit_camera_get_projection(mat4x4 proj) {
     mat4x4 perspective;
     mat4x4_perspective(perspective, RADIANS(45.0f), RENDER_WINDOW_ASPECT, 0.01f, 100.0f);
     mat4x4_mul(proj, perspective, _view);
 }
 
-float camera_get_zoom() {
-    return _zoom;
+float orbit_camera_get_distance() {
+    return _distance;
 }
 
-void camera_set_zoom(float zoom) {
-    _zoom = zoom;
+void orbit_camera_set_zoom(float distance) {
+    _distance = distance;
     // vec3_sub(_position_offset, _target, _position);
     // vec3_scale(_position_offset, _position_offset, zoom);
 }
@@ -88,7 +85,7 @@ void camera_set_zoom(float zoom) {
 /*
 Works ok, but doesn't roll very well when mouse is dragged horizontally near the top/bottom of the window.
 */
-void camera_rotate(float dx, float dy) {
+void orbit_camera_rotate(float dx, float dy) {
     float dx_rad = (2 * M_PI / (float)RENDER_WINDOW_WIDTH) * dx;
     float dy_rad = (M_PI / (float)RENDER_WINDOW_HEIGHT) * dy;
 
@@ -117,4 +114,3 @@ void camera_rotate(float dx, float dy) {
     camera_set_view(new_position, _target, _up);
     camera_up(_up);
 }
-#endif

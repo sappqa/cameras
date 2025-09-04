@@ -37,6 +37,7 @@ static GLFWwindow* _glfw_window_init() {
         return NULL;
     }
 
+    mouse_input_handler_init();
     glfwMakeContextCurrent(window);
     glfwSetKeyCallback(window, _key_callback);
     glfwSetMouseButtonCallback(window, _mouse_button_callback);

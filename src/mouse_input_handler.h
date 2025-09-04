@@ -7,6 +7,7 @@ static int middle_mouse_button_down = 0;
 
 static float zoom;
 
+void mouse_input_handler_init();
 void handle_mouse_button_input(GLFWwindow* window, int button, int action, int mods);
 void handle_mouse_move_input(GLFWwindow* window, double xpos, double ypos);
 void handle_mouse_move_input_arcball(GLFWwindow* window, double xpos, double ypos);

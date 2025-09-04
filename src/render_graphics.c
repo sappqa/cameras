@@ -153,7 +153,7 @@ static void _vertices_init() {
 }
 
 static void _camera_init() {
-    camera_init();
+    arcball_camera_init();
 }
 
 void graphics_init() {
@@ -173,7 +173,7 @@ void render_graphics() {
 
     glUseProgram(_simple_shaders);
     mat4x4 proj;
-    camera_get_projection(proj);
+    arcball_camera_get_projection(proj);
     glUniformMatrix4fv(_u_proj_location, 1, 0, (GLfloat*)proj);
 
     glBindVertexArray(_vao_cube);
