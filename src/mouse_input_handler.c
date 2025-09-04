@@ -78,7 +78,7 @@ static void _mouse_move_orbit(GLFWwindow* window, double xpos, double ypos) {
     double dy = ypos - _last_ypos;
 
     if (_left_down) {
-        // camera_rotate(dx, dy);
+        orbit_camera_rotate(dx, dy);
     }
     
     _last_xpos = xpos;

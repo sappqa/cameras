@@ -8,4 +8,5 @@ set(SOURCES ${SOURCES}
     ${CMAKE_CURRENT_SOURCE_DIR}/shaders.c
     ${CMAKE_CURRENT_SOURCE_DIR}/mouse_input_handler.c
     ${CMAKE_CURRENT_SOURCE_DIR}/arcball_camera.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/orbit_camera.c
     PARENT_SCOPE)

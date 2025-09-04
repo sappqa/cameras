@@ -20,6 +20,7 @@ add_subdirectory(src)
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE _POSIX_C_SOURCE=200112L)
-target_compile_definitions(${PROJECT_NAME} PRIVATE USE_ARCBALL_CAMERA)
+# target_compile_definitions(${PROJECT_NAME} PRIVATE USE_ARCBALL_CAMERA)
+target_compile_definitions(${PROJECT_NAME} PRIVATE USE_ORBIT_CAMERA)
 
 target_link_libraries(${PROJECT_NAME} glfw glad)
