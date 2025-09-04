@@ -1,32 +1,35 @@
+/*
+This basic arcball implementation is achieved by accumulating small rotation quaternions mapped from each mouse movement delta into a global orientation quaternion.
+The camera position is recomputed each frame simply by applying the global orientation to a default starting position.
+*/
+
 #include "arcball_camera.h"
 #include "common.h"
+#include "stdio.h"
 
 static vec3 _sphere_start;
-static vec3 _position;
-static vec3 _target;
-static vec3 _up;
 static float _distance = 30.0f;
+static quat _orientation;
 static mat4x4 _view;
 
+static void _arcball_camera_update_view() {
+    vec3 seed_position = {0, 0, _distance};
+    vec3 target = {0, 0, 0};
+    vec3 seed_up = {0, 1, 0};
+
+    vec3 position_oriented, up_oriented;
+    quat_mul_vec3(position_oriented, _orientation, seed_position);
+    quat_mul_vec3(up_oriented, _orientation, seed_up);
+
+    vec3 position;
+    vec3_add(position, target, position_oriented);
+
+    mat4x4 new_view;
+    mat4x4_look_at(_view, position, target, up_oriented);
+}
 
 void arcball_camera_init() {
-    vec3 position = {0, 0, -_distance};
-    vec3 target = {0, 0, 0};
-    vec3 up = {0, 1, 0};
-    
-    arcball_camera_set_view(position, target, up);
-}
-
-static void _arcball_camera_update_view() {
-    mat4x4 new_view;
-    mat4x4_look_at(new_view, _position, _target, _up);
-    mat4x4_dup(_view, new_view);
-}
-
-void arcball_camera_set_view(vec3 position, vec3 target, vec3 up) {
-    vec3_dup(_position, position);
-    vec3_dup(_target, target);
-    vec3_dup(_up, up);
+    quat_identity(_orientation);
     _arcball_camera_update_view();
 }
 
@@ -34,12 +37,16 @@ static void _ndc_to_sphere(vec2 ndc, vec3 sphere) {
     float x2 = ndc[0] * ndc[0];
     float y2 = ndc[1] * ndc[1];
 
-    float z = 0.0f;
     if (x2 + y2 <= 1.0f) {
-        z = sqrtf(1 - x2 - y2);
+        float z = sqrtf(1 - x2 - y2);
+        vec3_dup(sphere, (vec3) {ndc[0], ndc[1], z});
     }
-    
-    vec3_dup(sphere, (vec3) {ndc[0], ndc[1], z});
+    else {
+        vec2 norm; vec2_norm(norm, ndc);
+        vec3_dup(sphere, (vec3) {norm[0], norm[1], 0.0f});
+    }
+
+    vec3_norm(sphere, sphere);
 }
 
 static void _mouse_to_ndc(float mouse_x, float mouse_y, vec2 ndc_out) {
@@ -77,22 +84,15 @@ void arcball_camera_rotate(float mouse_x, float mouse_y) {
     vec3_mul_cross(cross, _sphere_start, sphere_current);
     vec3_norm(cross, cross);
 
-    float ab = vec3_mul_inner(_sphere_start, sphere_current);
-    float mag_a = vec3_len(_sphere_start);
-    float mag_b = vec3_len(sphere_current);
-    float denom = mag_a * mag_b;
-    float theta = acos(ab / denom);
+    float cos_theta = vec3_mul_inner(_sphere_start, sphere_current);
+    cos_theta = fmaxf(-1.0f, fminf(1.0f, cos_theta));
+    float theta = -acos(cos_theta);
 
-    quat rot;
-    quat_rotate(rot, theta, cross);
+    quat rotation;
+    quat_rotate(rotation, theta, cross);
+    quat_mul(_orientation, _orientation, rotation);
+    quat_norm(_orientation, _orientation);
 
-    vec4 camera_position;
-    vec3_sub(camera_position, _position, _target);
-    vec4 position_rotated; mat4x4_mul_vec4(position_rotated, rot, camera_position);
-
-    vec3 new_position;
-    vec3_add(new_position, _target, position_rotated);
-
-    arcball_camera_set_view(new_position, _target, _up);
-    // camera_up(_up);
+    _arcball_camera_update_view();
+    vec3_dup(_sphere_start, sphere_current);
 }

@@ -20,6 +20,7 @@ static struct camera_selector active_camera;
 
 static void _left_press_arcball(GLFWwindow* window) {
     glfwGetCursorPos(window, &_mouse_down_x, &_mouse_down_y);
+    arcball_camera_set_start_point(_mouse_down_x, _mouse_down_y);
 }
 
 static void _left_press(GLFWwindow* window) {
