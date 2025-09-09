@@ -25,8 +25,9 @@ static void _left_press_arcball(GLFWwindow* window) {
 
 static void _left_press(GLFWwindow* window) {
     _left_down = 1;
-    active_camera.mouse_left_press(window);
-
+    if (active_camera.mouse_left_press != NULL) {
+        active_camera.mouse_left_press(window);
+    }
 }
 
 static void _left_release() {
@@ -98,6 +99,7 @@ void mouse_input_handler_init() {
     active_camera.mouse_left_press = _left_press_arcball;
     active_camera.mouse_move = _mouse_move_arcball;
     #elif USE_ORBIT_CAMERA
+    active_camera.mouse_left_press = NULL;
     active_camera.mouse_move = _mouse_move_orbit;
     #endif
 }

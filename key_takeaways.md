@@ -20,3 +20,10 @@
     - from the project root, run `cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=TRUE -S . -B build -G "Unix Makefiles"`
     - not sure if this is necessary, I had issues with getting the debugger to work when I just built normally using `cmake ..` in the build directory. I'm not sure why those above commands fixed the issue, it just seems like it would be the same thing as removing the build directory and re-running cmake, but that didn't work when I tried it...
 - vs code's cmake:Reconfigure shortcut option uses Ninja by default which causes issues if you're using makefiles with cmake.
+
+
+- why does the orbit camera work even though I don't manually calculate the up vector for the camera?
+
+- originally, my world up was 0,1,0 and my camera was at 0,0,40 looking at the origin, apparently that is incorrect. Up should instead be 0,0,1. Why?
+
+- Why did world up of 0,1,0 still work in my arcball camera if it didn't in my orbit camera?
